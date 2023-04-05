@@ -1,6 +1,7 @@
 import { City } from './city.js'
 import '@/base/index.scss'
 import * as THREE from 'three'
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 export const initCity = () => {
   // 獲取canvas 元素
   const canvas = document.getElementById('webgl')
@@ -8,8 +9,19 @@ export const initCity = () => {
   const scene = new THREE.Scene()
   // 創建相機
   const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 100000)
-  camera.position.set(0, 0, 50)
+  camera.position.set(0, 7200, 10000)
+  camera.lookAt(new THREE.Vector3(0,0,0))
   scene.add(camera)
+  
+  // 添加相機控件 canvas不是由three.js生成，所以也要傳遞過去
+  const controls = new OrbitControls(camera, canvas)
+  // 是否有慣性（拖動場景時，是否立即停下或是緩慢停下）
+  controls.enableDamping = true
+  // 是否可以縮放
+  controls.enableZoom = true
+  // 最近和最遠的距離
+  controls.minDistance = 100
+  controls.maxDistance = 10000 // 2000
 
   // 添加燈光
   // 環境光
@@ -39,6 +51,8 @@ export const initCity = () => {
   const start = () => {
 
     city.start()
+    // 控件要在動畫內update
+    controls.update()
     // 渲染場景
     renderer.render(scene, camera)
     // 生成動畫
