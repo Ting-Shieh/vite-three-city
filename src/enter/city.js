@@ -1,6 +1,7 @@
 
 import { loadFBX } from '@/utils/index.js'
 import { SurroundLine } from '@/effect/surroundLine.js'
+import { Background } from '@/effect/background.js'
 // import * as THREE from 'three'
 export class City {
   constructor(scene) {
@@ -43,11 +44,18 @@ export class City {
           // this.scene.add(mesh)
 
           new SurroundLine(this.scene, child)
+          
         }
       })
       // console.log(object)
       // this.scene.add(object)
+      // 模型加載完成後
+      this.initEffect()
     })
+  }
+
+  initEffect(){
+    new Background(this.scene)
   }
   start(){}
 }
