@@ -21,7 +21,7 @@ export const initCity = () => {
   controls.enableZoom = true
   // 最近和最遠的距離
   controls.minDistance = 100
-  controls.maxDistance = 10000 // 2000
+  controls.maxDistance = 9500 // 2000 // 10000
 
   // 添加燈光
   // 環境光
@@ -46,7 +46,7 @@ export const initCity = () => {
   renderer.setClearColor(new THREE.Color(0x000000), 1)
 
   // 導入城市(外部模型)
-  const city = new City(scene)
+  const city = new City(scene, camera)
   // 動畫
   const start = () => {
 

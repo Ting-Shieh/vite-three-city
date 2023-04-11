@@ -9,6 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@tweenjs/tween.js": "^19.0.0",
     "sass": "^1.60.0",
     "three": "^0.151.2",
     "vue": "^3.2.47"
