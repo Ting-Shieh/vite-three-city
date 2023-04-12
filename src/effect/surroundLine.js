@@ -11,7 +11,9 @@ export class SurroundLine {
     // // 高度差 ＝ 最底部 - 最頂部
     // this.size = 180
 
-    this.render()
+    this.createMesh() // 不執行此函數會得到純線框模型
+    // 創建外圍線條
+    this.createLine()
   }
 
   computedMesh(){
@@ -19,10 +21,10 @@ export class SurroundLine {
     this.child.geometry.computeBoundingBox()
     this.child.geometry.computeBoundingSphere()
   }
-  render() {
+  createMesh() {
     this.computedMesh()
 
-    const {min, max} = this.child.geometry.
+    const {min, max} = this.child.geometry.boundingBox
     
     // 高度差
     const size = max.z - min.z
@@ -66,5 +68,37 @@ export class SurroundLine {
     mesh.scale.copy(this.child.scale)
 
     this.scene.add(mesh)
+  }
+  createLine() {
+    // 獲取建築物的外圍
+    const geometry = new THREE.EdgesGeometry(this.child.geometry)
+    // // api創建
+    // const material = new THREE.LineBasicMaterial({ color: color.soundLine})
+    // 自定義線條渲染
+    const material = new THREE.ShaderMaterial({
+      uniforms: {
+        u_line_color: {
+          value: new THREE.Color({ color: color.soundLine})
+        }
+      },
+      vertexShader: `
+        void main () {
+          gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+        }
+      `,
+      fragmentShader: `
+        uniform vec3 u_line_color;
+        void main () {
+          gl_FragColor = vec4(u_line_color, 1.0);
+        }
+      `,
+    })
+    // 創建線條
+    const line = new THREE.LineSegments(geometry, material)
+    // 繼承建築物的偏移量和旋轉
+    line.scale.copy(this.child.scale)
+    line.rotation.copy(this.child.rotation)
+    line.position.copy(this.child.position)
+    this.scene.add(line)
   }
 }
