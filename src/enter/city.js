@@ -12,6 +12,10 @@ export class City {
     this.camera = camera
     this.tweenPosition = null
     this.tweenRotation = null
+    // 對象格式 ＝> 為了每一幀都是同一個對象
+    this.height = {
+      value: 5
+    }
     this.loadCity()
   }
 
@@ -49,7 +53,7 @@ export class City {
           
           // this.scene.add(mesh)
 
-          new SurroundLine(this.scene, child)
+          new SurroundLine(this.scene, child, this.height)
           
         }
       })
@@ -127,6 +131,11 @@ export class City {
     if (this.tweenPosition && this.tweenRotation) {
       this.tweenPosition.update()
       this.tweenRotation.update()
+    }
+    // 更新建築物掃描高度
+    this.height.value += 0.4
+    if(this.height.value > 160){
+      this.height.value = 5
     }
   }
 }

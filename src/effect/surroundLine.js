@@ -1,7 +1,8 @@
 import * as THREE from 'three'
 import {color} from '../config/constants.js'
 export class SurroundLine {
-  constructor(scene, child) {
+  constructor(scene, child, height) {
+    this.height = height
     this.scene = scene
     this.child = child
     // 需要一個模型顏色  最底部顯示的顏色
@@ -31,6 +32,12 @@ export class SurroundLine {
     
     const material = new THREE.ShaderMaterial({ 
       uniforms: {
+        // 當前掃描高度
+        u_height: this.height,
+        // 掃描線條的顏色
+        u_up_color: {
+          value: new THREE.Color(color.risingColor)
+        },
         u_city_color: {
           value: new THREE.Color(this.meshColor)
         },
@@ -53,9 +60,19 @@ export class SurroundLine {
         uniform vec3 u_city_color;
         uniform vec3 u_head_color;
         uniform float u_size;
+        uniform float u_height;
+        uniform vec3 u_up_color;
         void main () {
           vec3 base_color = u_city_color;
           base_color = mix(base_color, u_head_color, v_position.z / u_size); // 混合好的顏色數據
+          // 上升線條的高度是多少
+          if(u_height > v_position.z && u_height < v_position.z + 6.0){
+            // 掃瞄線條模糊顏色
+            float f_index = (u_height - v_position.z) / 3.0;
+            // base_color = u_up_color;
+            base_color = mix(u_up_color, base_color, abs(f_index - 1.0));
+          }
+          
           gl_FragColor = vec4(base_color, 1.0); // vec4(1.0, 0.0, 0.0, 1.0);
         }
       `,
