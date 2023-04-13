@@ -1,8 +1,9 @@
 import * as THREE from 'three'
 import {color} from '../config/constants.js'
 export class SurroundLine {
-  constructor(scene, child, height) {
+  constructor(scene, child, height, time) {
     this.height = height
+    this.time = time
     this.scene = scene
     this.child = child
     // 需要一個模型顏色  最底部顯示的顏色
@@ -89,6 +90,8 @@ export class SurroundLine {
   createLine() {
     // 獲取建築物的外圍
     const geometry = new THREE.EdgesGeometry(this.child.geometry)
+    // 獲取掃描位置
+    const {max, min} = this.child.geometry.boundingBox
     // // api創建
     // const material = new THREE.LineBasicMaterial({ color: color.soundLine})
     // 自定義線條渲染
@@ -96,17 +99,54 @@ export class SurroundLine {
       uniforms: {
         u_line_color: {
           value: new THREE.Color({ color: color.soundLine})
+        },
+        // 一個不斷變化的值 ex: u_height u_time
+        u_time: this.time,
+        // 掃描的位置
+        u_max: {
+          value: max
+        },
+        u_min: {
+          value: min
+        },
+        // 掃描的顏色
+        u_live_color: {
+          value: new THREE.Color({ color: color.liveColor})
         }
       },
       vertexShader: `
+        uniform float u_time;
+        uniform vec3 u_line_color;
+        uniform vec3 u_live_color;
+        uniform vec3 u_max;
+        uniform vec3 u_min;
+        
+        // varying 變量要放到片元著色器
+        varying vec3 v_color;
         void main () {
+          float new_time = mod(u_time * 0.1, 1.0);
+          // 掃描的位置
+          float rangeY = mix(u_min.y, u_max.y, new_time);
+          // 該區間內顯示掃描光帶
+          if(rangeY < position.y && rangeY > position.y - 100.0){
+            float f_index = 1.0 - sin((position.y - rangeY) / 100.0 * 3.14);
+            float r = mix(u_live_color.r, u_line_color.r, f_index);
+            float g = mix(u_live_color.g, u_line_color.g, f_index);
+            float b = mix(u_live_color.b, u_line_color.b, f_index);
+          
+            v_color = vec3(r, g, b);
+          } else {
+            v_color = u_line_color;
+          }
           gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
         }
       `,
       fragmentShader: `
-        uniform vec3 u_line_color;
+        varying vec3 v_color;
+        // uniform vec3 u_line_color;
         void main () {
-          gl_FragColor = vec4(u_line_color, 1.0);
+          // gl_FragColor = vec4(u_line_color, 1.0);
+          gl_FragColor = vec4(v_color, 1.0);
         }
       `,
     })

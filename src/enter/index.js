@@ -47,10 +47,12 @@ export const initCity = () => {
 
   // 導入城市(外部模型)
   const city = new City(scene, camera)
+  // 計時
+  const clock = new THREE.Clock()
   // 動畫
   const start = () => {
 
-    city.start()
+    city.start(clock.getDelta())
     // 控件要在動畫內update
     controls.update()
     // 渲染場景

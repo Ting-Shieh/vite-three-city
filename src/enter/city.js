@@ -16,6 +16,9 @@ export class City {
     this.height = {
       value: 5
     }
+    this.time = {
+      value: 0
+    }
     this.loadCity()
   }
 
@@ -53,7 +56,7 @@ export class City {
           
           // this.scene.add(mesh)
 
-          new SurroundLine(this.scene, child, this.height)
+          new SurroundLine(this.scene, child, this.height, this.time)
           
         }
       })
@@ -127,11 +130,13 @@ export class City {
       }, time).start()
     }
   }
-  start(){
+  start(delta){
     if (this.tweenPosition && this.tweenRotation) {
       this.tweenPosition.update()
       this.tweenRotation.update()
     }
+    // 
+    this.time.value += delta
     // 更新建築物掃描高度
     this.height.value += 0.4
     if(this.height.value > 160){
