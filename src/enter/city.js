@@ -2,6 +2,7 @@
 import { loadFBX } from '@/utils/index.js'
 import { SurroundLine } from '@/effect/surroundLine.js'
 import { Background } from '@/effect/background.js'
+import { Radar } from '@/effect/radar.js'
 import * as THREE from 'three'
 import * as TWEEN from '@tweenjs/tween.js'
 
@@ -69,6 +70,7 @@ export class City {
 
   initEffect(){
     new Background(this.scene)
+    new Radar(this.scene, this.time)
     this.addClick()
   }
   // 為了讓相機控件與點擊事件作區分
