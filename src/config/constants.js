@@ -4,5 +4,6 @@ export const color = {
   soundLine: '#4f90bb', // 建築物的外圍線條顏色
   risingColor: '#5588AA', // 建築物掃描線條的顏色
   liveColor: '#ffffff', // 場景掃描的顏色
-  radarColor: '#ff8800' //  雷達顏色
+  radarColor: '#ff8800', // 雷達顏色
+  wallColor: '#fab73f', // 光牆顏色
 }
