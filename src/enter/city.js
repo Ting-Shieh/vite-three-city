@@ -4,6 +4,7 @@ import { SurroundLine } from '@/effect/surroundLine.js'
 import { Background } from '@/effect/background.js'
 import { Radar } from '@/effect/radar.js'
 import { Wall } from '@/effect/wall.js'
+import { Circle } from '@/effect/circle.js'
 import * as THREE from 'three'
 import * as TWEEN from '@tweenjs/tween.js'
 
@@ -73,6 +74,7 @@ export class City {
     new Background(this.scene)
     new Radar(this.scene, this.time)
     new Wall(this.scene, this.time)
+    new Circle(this.scene, this.time)
     this.addClick()
   }
   // 為了讓相機控件與點擊事件作區分
