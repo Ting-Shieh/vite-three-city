@@ -5,6 +5,7 @@ import { Background } from '@/effect/background.js'
 import { Radar } from '@/effect/radar.js'
 import { Wall } from '@/effect/wall.js'
 import { Circle } from '@/effect/circle.js'
+import { Ball } from '@/effect/ball.js'
 import * as THREE from 'three'
 import * as TWEEN from '@tweenjs/tween.js'
 
@@ -75,6 +76,7 @@ export class City {
     new Radar(this.scene, this.time)
     new Wall(this.scene, this.time)
     new Circle(this.scene, this.time)
+    new Ball(this.scene, this.time)
     this.addClick()
   }
   // 為了讓相機控件與點擊事件作區分
