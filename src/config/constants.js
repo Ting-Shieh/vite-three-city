@@ -8,4 +8,5 @@ export const color = {
   wallColor: '#fab73f', // 光牆顏色
   circleColor: '#00bbff', // 光圈(擴散圓)顏色
   ballColor: '#fab73f',
+  coneColor: '#ffff00',
 }

@@ -6,6 +6,7 @@ import { Radar } from '@/effect/radar.js'
 import { Wall } from '@/effect/wall.js'
 import { Circle } from '@/effect/circle.js'
 import { Ball } from '@/effect/ball.js'
+import { Cone } from '@/effect/cone.js'
 import * as THREE from 'three'
 import * as TWEEN from '@tweenjs/tween.js'
 
@@ -16,6 +17,10 @@ export class City {
     this.camera = camera
     this.tweenPosition = null
     this.tweenRotation = null
+    this.top = {
+      value: 0
+    }
+    this.flag = false // 椎體上下反覆
     // 對象格式 ＝> 為了每一幀都是同一個對象
     this.height = {
       value: 5
@@ -77,6 +82,7 @@ export class City {
     new Wall(this.scene, this.time)
     new Circle(this.scene, this.time)
     new Ball(this.scene, this.time)
+    new Cone(this.scene, this.time, this.top, this.height)
     this.addClick()
   }
   // 為了讓相機控件與點擊事件作區分
@@ -150,5 +156,9 @@ export class City {
     if(this.height.value > 160){
       this.height.value = 5
     }
+    if(this.top.value > 15 || this.top.value < 0){
+      this.flag = !this.flag
+    }
+    this.top.value += this.flag ? -0.8 : 0.8
   }
 }
