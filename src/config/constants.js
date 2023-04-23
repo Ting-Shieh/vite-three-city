@@ -9,4 +9,5 @@ export const color = {
   circleColor: '#00bbff', // 光圈(擴散圓)顏色
   ballColor: '#fab73f',
   coneColor: '#ffff00',
+  flyColor: '#00bbff',
 }
