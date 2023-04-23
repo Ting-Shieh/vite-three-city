@@ -8,6 +8,7 @@ import { Circle } from '@/effect/circle.js'
 import { Ball } from '@/effect/ball.js'
 import { Cone } from '@/effect/cone.js'
 import { Fly } from '@/effect/fly.js'
+import { Road } from '@/effect/road.js'
 import * as THREE from 'three'
 import * as TWEEN from '@tweenjs/tween.js'
 
@@ -85,6 +86,7 @@ export class City {
     new Ball(this.scene, this.time)
     new Cone(this.scene, this.time, this.top, this.height)
     new Fly(this.scene, this.time)
+    new Road(this.scene, this.time)
     this.addClick()
   }
   // 為了讓相機控件與點擊事件作區分
