@@ -10,6 +10,7 @@ import { Cone } from '@/effect/cone.js'
 import { Fly } from '@/effect/fly.js'
 import { Road } from '@/effect/road.js'
 import { Font } from '@/effect/font.js'
+import { Snow } from '@/effect/snow.js'
 import * as THREE from 'three'
 import * as TWEEN from '@tweenjs/tween.js'
 
@@ -89,6 +90,7 @@ export class City {
     new Fly(this.scene, this.time)
     new Road(this.scene, this.time)
     new Font(this.scene)
+    new Snow(this.scene)
     this.addClick()
   }
   // 為了讓相機控件與點擊事件作區分
