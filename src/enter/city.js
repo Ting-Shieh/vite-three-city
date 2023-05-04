@@ -32,6 +32,7 @@ export class City {
     this.time = {
       value: 0
     }
+    this.effect = {}
     this.loadCity()
   }
 
@@ -90,7 +91,7 @@ export class City {
     new Fly(this.scene, this.time)
     new Road(this.scene, this.time)
     new Font(this.scene)
-    new Snow(this.scene)
+    this.effect.snow = new Snow(this.scene)
     this.addClick()
   }
   // 為了讓相機控件與點擊事件作區分
@@ -153,6 +154,10 @@ export class City {
     }
   }
   start(delta){
+    // 雪花動畫
+    for (const key in this.effect) {
+      this.effect[key] && this.effect[key].animation()
+    }
     if (this.tweenPosition && this.tweenRotation) {
       this.tweenPosition.update()
       this.tweenRotation.update()
