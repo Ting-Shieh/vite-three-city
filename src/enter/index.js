@@ -18,10 +18,12 @@ export const initCity = () => {
   // 是否有慣性（拖動場景時，是否立即停下或是緩慢停下）
   controls.enableDamping = true
   // 是否可以縮放
-  controls.enableZoom = true
+  controls.enableZoom = false // true
   // 最近和最遠的距離
   controls.minDistance = 100
   controls.maxDistance = 9500 // 2000 // 10000
+  // 處理旋轉場景偏移 ＝> 開啟右鍵拖動
+  controls.enablePan = true
 
   // 添加燈光
   // 環境光
@@ -46,7 +48,7 @@ export const initCity = () => {
   renderer.setClearColor(new THREE.Color(0x000000), 1)
 
   // 導入城市(外部模型)
-  const city = new City(scene, camera)
+  const city = new City(scene, camera, controls)
   // 計時
   const clock = new THREE.Clock()
   // 動畫

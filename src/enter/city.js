@@ -17,9 +17,10 @@ import * as TWEEN from '@tweenjs/tween.js'
 
 // import * as THREE from 'three'
 export class City {
-  constructor(scene, camera) {
+  constructor(scene, camera, controls) {
     this.scene = scene
     this.camera = camera
+    this.controls = controls
     this.tweenPosition = null
     this.tweenRotation = null
     this.top = {
@@ -92,9 +93,10 @@ export class City {
     new Fly(this.scene, this.time)
     new Road(this.scene, this.time)
     new Font(this.scene)
-    this.effect.snow = new Snow(this.scene)
+    // this.effect.snow = new Snow(this.scene)
     // this.effect.rain = new Rain(this.scene)
     this.addClick()
+    this.addWheel()
   }
   // 為了讓相機控件與點擊事件作區分
   addClick(){
@@ -111,6 +113,38 @@ export class City {
         this.clickEvent(event)
       }
       document.onmousemove = null
+    }
+  }
+  // 監聽滑鼠縮放
+  addWheel(){
+    const body = document.body
+    body.onmousewheel = (event) => {
+      const value = 30
+      // 獲取滑鼠當前瀏座標
+      const x = (event.clientX / window.innerWidth) * 2 - 1 
+      const y = -(event.clientY / window.innerHeight) * 2 + 1
+      // 獲取設備座標（三維)
+      const vector = new THREE.Vector3(x, y, 0.5)
+      // 收到縮放的座標訊息
+      vector.unproject(this.camera)
+      vector.sub(this.camera.position).normalize()
+      if(event.wheelDelta > 0){
+        this.camera.position.x += vector.x * value
+        this.camera.position.y += vector.y * value
+        this.camera.position.z += vector.z * value
+
+        this.controls.target.x += vector.x * value
+        this.controls.target.y += vector.y * value
+        this.controls.target.z += vector.z * value
+      } else {
+        this.camera.position.x -= vector.x * value
+        this.camera.position.y -= vector.y * value
+        this.camera.position.z -= vector.z * value
+
+        this.controls.target.x -= vector.x * value
+        this.controls.target.y -= vector.y * value
+        this.controls.target.z -= vector.z * value
+      }
     }
   }
 
