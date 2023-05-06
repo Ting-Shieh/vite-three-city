@@ -47,13 +47,25 @@ export class SurroundLine {
         },
         u_size: {
           value: size //this.size
-        }
+        },
+        u_time: this.time
       },
       vertexShader: `
+        uniform float u_time;
         varying vec3 v_position;
         void main () {
           v_position = position;
-          gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+          float uMax = 4.0;
+          
+          // 建築物生長
+          // position.y += u_time; // 無效
+          float rate = u_time / uMax * 2.0; // 變化的比例
+          // 邊界條件
+          if (rate>1.0) {
+            rate = 1.0;
+          }
+          float z = position.z * rate;
+          gl_Position = projectionMatrix * modelViewMatrix * vec4(position.x, position.y, z, 1.0);
         }
       `,
       fragmentShader: `
@@ -124,6 +136,14 @@ export class SurroundLine {
         // varying 變量要放到片元著色器
         varying vec3 v_color;
         void main () {
+          // 建築物生長
+          float uMax = 4.0; // 變化的時間
+          float rate = u_time / uMax * 2.0; // 變化的比例
+          // 建築物生長邊界條件
+          if (rate>1.0) {
+            rate = 1.0;
+          }
+          float z = position.z * rate;
           float new_time = mod(u_time * 0.1, 1.0);
           // 掃描的位置
           float rangeY = mix(u_min.y, u_max.y, new_time);
@@ -138,7 +158,7 @@ export class SurroundLine {
           } else {
             v_color = u_line_color;
           }
-          gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+          gl_Position = projectionMatrix * modelViewMatrix * vec4(vec2(position), z, 1.0);
         }
       `,
       fragmentShader: `
