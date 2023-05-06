@@ -11,6 +11,7 @@ import { Fly } from '@/effect/fly.js'
 import { Road } from '@/effect/road.js'
 import { Font } from '@/effect/font.js'
 import { Snow } from '@/effect/snow.js'
+import { Rain } from '@/effect/rain.js'
 import * as THREE from 'three'
 import * as TWEEN from '@tweenjs/tween.js'
 
@@ -92,6 +93,7 @@ export class City {
     new Road(this.scene, this.time)
     new Font(this.scene)
     this.effect.snow = new Snow(this.scene)
+    // this.effect.rain = new Rain(this.scene)
     this.addClick()
   }
   // 為了讓相機控件與點擊事件作區分
