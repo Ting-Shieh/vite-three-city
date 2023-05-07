@@ -12,6 +12,7 @@ import { Road } from '@/effect/road.js'
 import { Font } from '@/effect/font.js'
 import { Snow } from '@/effect/snow.js'
 import { Rain } from '@/effect/rain.js'
+import { Smoke } from '@/effect/smoke.js'
 import * as THREE from 'three'
 import * as TWEEN from '@tweenjs/tween.js'
 
@@ -84,15 +85,16 @@ export class City {
   }
 
   initEffect(){
-    // new Background(this.scene)
-    // new Radar(this.scene, this.time)
-    // new Wall(this.scene, this.time)
-    // new Circle(this.scene, this.time)
-    // new Ball(this.scene, this.time)
-    // new Cone(this.scene, this.time, this.top, this.height)
-    // new Fly(this.scene, this.time)
-    // new Road(this.scene, this.time)
-    // new Font(this.scene)
+    new Background(this.scene)
+    new Radar(this.scene, this.time)
+    new Wall(this.scene, this.time)
+    new Circle(this.scene, this.time)
+    new Ball(this.scene, this.time)
+    new Cone(this.scene, this.time, this.top, this.height)
+    new Fly(this.scene, this.time)
+    new Road(this.scene, this.time)
+    new Font(this.scene)
+    this.effect.smoke = new Smoke(this.scene)
     // this.effect.snow = new Snow(this.scene)
     // this.effect.rain = new Rain(this.scene)
     this.addClick()
